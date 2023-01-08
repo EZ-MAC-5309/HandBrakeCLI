@@ -1,8 +1,8 @@
 # Declare the variables
 $FILE          =  0
 $HandBrakeCLI  =  "C:\<Path>\<To>\HandBrakeCLI.exe" # Replace anything in <> with your path to HandBrakeCLI.exe
-$DEST          =  "C:\<Path>\<To>\<Output>\<Folder>\" # Replace anything in <> with your path to the destination folder
-$LIST          =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*"} # Replace anything in <> with your path to the input folder
+$DEST          =  "C:\<Path>\<To>\<Output>\<Folder>\" # Replace anything in <> with your path to the actual folder
+$LIST          =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*"}
 $TOTAL         =  $LIST.Count
 
 # Parse the list
@@ -15,11 +15,11 @@ $LIST | % -Begin {
     # Declare the source path
     $Source = $_.FullName
     # Declare the saveas path
-    If ($_.Directory.Name -eq "<The Name of Your Input Folder>") {# Check if this is a file or a folder, replace <The Name of Your Input Folder> with actual name
+    If ($_.Directory.Name -eq "<The Name of Your Input Folder>") { # Check if this is a file or a folder, replace <The Name of Your Input Folder> with actual name
         $SaveAs = $DEST + $_.BaseName + ".mp4"
-    } Elseif ($_.BaseName -like "*$(($_.Directory.BaseName).Substring(0,5))*") {# Check if the file name is not obfuscated
+    } Elseif ($_.BaseName -like "*$(($_.Directory.BaseName).Substring(0,5))*") { # Check if the file name is not obfuscated
         $SaveAs = $DEST + $_.BaseName + ".mp4"
-    } Else {# If the file name is obfuscated, name it with the directory name
+    } Else { # If the file name is obfuscated, name it with the directory name
         $SaveAs = $DEST + $_.Directory.BaseName + ".mp4"
     }
  
@@ -32,17 +32,17 @@ $LIST | % -Begin {
     "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
     # Start HandBrakeCLI
-    If ($_.Directory.BaseName -like "*_UNPACK*") {# Check if this is an unpacking folder (for SABNZBD)
+    If ($_.Directory.BaseName -like "*_UNPACK*") { # Check if this is an unpacking folder (for SABNZBD)
     } Else {
-        & $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect -E ac3 >$null 2>&1
+        & $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect --all-audio -E ac3 >$null 2>&1
     }
 
     # Delete the source file
-    If ($_.Directory.BaseName -like "*_UNPACK*") {# Check if this is an unpacking folder (for SABNZBD)
+    If ($_.Directory.BaseName -like "*_UNPACK*") { # Check if this is an unpacking folder (for SABNZBD)
     } Else {
-        If ($_.Directory.Name -eq "<The Name of Your Input Folder>") {# Check if this is a file or a folder, replace <The Name of Your Input Folder> with actual name
+        If ($_.Directory.Name -eq "<The Name of Your Input Folder>") { # Check if this is a file or a folder, replace <The Name of Your Input Folder> with actual name
             Remove-Item -Path $_.FullName -Force
-        } Else {# If it is a folder, remove it recursively
+        } Else { # If it is a folder, remove it recursively
             Remove-Item -Path $_.DirectoryName -Force -Recurse
         }
     }
