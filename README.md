@@ -1,5 +1,6 @@
 # HandBrakeCLI
 PowerShell script to encode video for Plex with HandBrakeCLI
+<span style="background-color: #FFFF00">Marked text</span>
 >
 <pre>
 In the HandBrakeCLI.ps1 file, be sure to replace anything in <> with your path or folder name
