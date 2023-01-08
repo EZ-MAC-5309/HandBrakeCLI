@@ -1,7 +1,7 @@
 # HandBrakeCLI
 PowerShell script to encode video for Plex with HandBrakeCLI
-`Marked text`
->
+>==highlight==
+>>
 <pre>
 In the HandBrakeCLI.ps1 file, be sure to replace anything in <> with your path or folder name
 Example:
