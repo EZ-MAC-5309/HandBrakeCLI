@@ -34,7 +34,7 @@ $LIST | % -Begin {
     # Start HandBrakeCLI
     If ($_.Directory.BaseName -like "*_UNPACK*") { # Check if this is an unpacking folder (for SABNZBD)
     } Else {
-        & $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect --all-audio -E ac3 >$null 2>&1
+        & $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect --audio-lang-list eng -E ac3 >$null 2>&1
     }
 
     # Delete the source file
