@@ -5,7 +5,7 @@
 
 Example:  
 If ($\_.Directory.Name -eq "`<The Name of Your Input Folder>`") {  
-If your input file path is  "`C:\Users\Me\Downloads\Completed\`"  
+If your input file path is: "`C:\Users\Me\Downloads\Completed\`"  
 If ($\_.Directory.Name -eq "`Completed`") {  
 
 `This script will automatically upscale or downscale video to (720 x 540 4:3) or (720 x 406 16:9)`
