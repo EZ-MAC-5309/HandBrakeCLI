@@ -2,8 +2,7 @@
 $FILE          =  0
 $HandBrakeCLI  =  "C:\<Path>\<To>\HandBrakeCLI.exe" # Replace anything in <> with your path to HandBrakeCLI.exe
 $DEST          =  "C:\<Path>\<To>\<Output>\<Folder>\" # Replace anything in <> with your path to the destination folder
-$LIST          =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*"}
-                  # Replace anything in <> with your path to the input folder
+$LIST          =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*"} # Replace anything in <> with your path to the input folder
 $TOTAL         =  $LIST.Count
 
 # Parse the list
@@ -25,17 +24,17 @@ $LIST | % -Begin {
     }
  
     # Write the working message
-    "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     Write-Host "Handbrake Encoding $FILE of $TOTAL..." -ForegroundColor Yellow
-    "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     "Source: $Source"
     "SaveAs: $SaveAs"
-    "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
     # Start HandBrakeCLI
     If ($_.Directory.BaseName -like "*_UNPACK*") {# Check if this is an unpacking folder (for SABNZBD)
     } Else {
-        & $HandBrakeCLI -i $Source -o $SaveAs --main-feature -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect --min-duration 180 --all-audio -E ac3 >$null 2>&1
+        & $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect -E ac3 >$null 2>&1
     }
 
     # Delete the source file
@@ -49,7 +48,7 @@ $LIST | % -Begin {
     }
 } -End {
     # Write the completion message
-    "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     Write-Host "File(s) $FILE of $TOTAL Completed" -ForegroundColor Cyan
-    "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 }
