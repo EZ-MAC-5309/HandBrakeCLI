@@ -3,10 +3,10 @@
 
 In the `HandBrakeCLI.ps1` file, be sure to replace anything in `<>` with your `path or folder name`
 
-Example:
-  For this line: If ($_.Directory.Name -eq "`<The Name of Your Input Folder>`") {
-  If your input file path was "`C:\Users\Me\Downloads\Completed\`"
-  This should be changed to: If ($_.Directory.Name -eq "`Completed`") {
+Example:  
+  For this line: If ($_.Directory.Name -eq "`<The Name of Your Input Folder>`") {  
+  If your input file path was "`C:\Users\Me\Downloads\Completed\`"  
+  This should be changed to: If ($_.Directory.Name -eq "`Completed`") {  
 
 This script will automatically upscale or downscale video to (720 x 540 4:3) or (720 x 406 16:9)
 
