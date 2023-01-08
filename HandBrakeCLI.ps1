@@ -3,7 +3,7 @@ $FILE          =  0
 $HandBrakeCLI  =  "C:\<Path>\<To>\HandBrakeCLI.exe" # Replace anything in <> with your path to HandBrakeCLI.exe
 $DEST          =  "C:\<Path>\<To>\<Output>\<Folder>\" # Replace anything in <> with your path to the destination folder
 $LIST          =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*"}
-# Replace anything in <> with your path to the input folder
+                  # Replace anything in <> with your path to the input folder
 $TOTAL         =  $LIST.Count
 
 # Parse the list
