@@ -10,5 +10,11 @@ If ($\_.Directory.Name -eq "`Completed`") {
 
 `This script will automatically upscale or downscale video to (720 x 540 4:3) or (720 x 406 16:9)`
 
-You can change this to something else in the following line:  
-& $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w `720` -B 160 -X `720` -O --non-anamorphic --crop 0:0:0:0 --keep-display-aspect --audio-lang-list eng -E ac3 >$null 2>&1
+You can change this to something else in the 720.json file:  
+For a 1280p resolution for example:  
+"PictureWidth": `720`, `set to 1280`  
+"PictureHeight": `576`, `set to 720`  
+"PictureUseMaximumSize": false,  
+"PictureAllowUpscaling": true,  
+"PictureForceHeight": 0,  
+"PictureForceWidth": `720`, `set to 1280`
