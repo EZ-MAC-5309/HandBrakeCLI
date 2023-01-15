@@ -1,9 +1,10 @@
+# Replace anything in <> with your own path to HandBrakeCLI.exe, your input folder, your output folder, etc...
 # Declare the variables
-$FILE          =  0
-$HandBrakeCLI  =  "C:\<Path>\<To>\HandBrakeCLI.exe" # Replace anything in <> with your path to HandBrakeCLI.exe
-$DEST          =  "C:\<Path>\<To>\<Output>\<Folder>\" # Replace anything in <> with your path to the actual folder
-$LIST          =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*"}
-$TOTAL         =  $LIST.Count
+$FILE         =  0
+$HandBrakeCLI =  "C:\<Path>\<To>\HandBrakeCLI.exe"
+$Preset       =  "C:\<Path>\<To>\720.json"
+$DEST         =  "C:\<Path>\<To>\<Output>\<Folder>\"
+$LIST         =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*" -and $_.Directory.BaseName -notlike "*_UNPACK*"}
 
 # Parse the list
 $LIST | % -Begin {
@@ -15,40 +16,40 @@ $LIST | % -Begin {
     # Declare the source path
     $Source = $_.FullName
     # Declare the saveas path
-    If ($_.Directory.Name -eq "<The Name of Your Input Folder>") { # Check if this is a file or a folder, replace <The Name of Your Input Folder> with actual name
+    If ($_.Directory.Name -eq "<The Name of Your Input Folder>") {
         $SaveAs = $DEST + $_.BaseName + ".mp4"
-    } Elseif ($_.BaseName -like "*$(($_.Directory.BaseName).Substring(0,5))*") { # Check if the file name is not obfuscated
+    } Elseif ($_.BaseName -like "*$(($_.Directory.BaseName).Substring(0,4))*") {
         $SaveAs = $DEST + $_.BaseName + ".mp4"
-    } Else { # If the file name is obfuscated, name it with the directory name
+    } Else {
         $SaveAs = $DEST + $_.Directory.BaseName + ".mp4"
     }
- 
+
     # Write the working message
-    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-    Write-Host "Handbrake Encoding $FILE of $TOTAL..." -ForegroundColor Yellow
-    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-    "Source: $Source"
-    "SaveAs: $SaveAs"
-    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    Write-Host "`n|$("-" * ($Source.Length + 10))|"
+    Write-Host "|" -ForegroundColor White -NoNewline; Write-Host " Handbrake Encoding $FILE of $($LIST.Count)... " -ForegroundColor Yellow -NoNewline; Write-Host "$(" " * ($Source.Length - 18 - $FILE.ToString().Length - $($LIST.Count).ToString().Length))|" -ForegroundColor White
+    Write-Host "|$("-" * ($Source.Length + 10))|"
+    Write-Host "| Source: $($Source) |"
+    Write-Host "| SaveAs: $($SaveAs + " " * ($Source.Length - $SaveAs.Length)) |"
+    Write-Host "|$("-" * ($Source.Length + 10))|`n"
 
     # Start HandBrakeCLI
-    If ($_.Directory.BaseName -like "*_UNPACK*") { # Check if this is an unpacking folder (for SABNZBD)
-    } Else {
-        & $HandBrakeCLI -i $Source -o $SaveAs -e x264 -q 23 -w 720 -B 160 -X 720 -O --non-anamorphic --keep-display-aspect --audio-lang-list eng -E ac3 >$null 2>&1
-    }
+    & $HandBrakeCLI --preset-import-file $Preset -i $Source -o $SaveAs >$null 2>&1
 
     # Delete the source file
-    If ($_.Directory.BaseName -like "*_UNPACK*") { # Check if this is an unpacking folder (for SABNZBD)
-    } Else {
-        If ($_.Directory.Name -eq "<The Name of Your Input Folder>") { # Check if this is a file or a folder, replace <The Name of Your Input Folder> with actual name
-            Remove-Item -Path $_.FullName -Force
-        } Else { # If it is a folder, remove it recursively
-            Remove-Item -Path $_.DirectoryName -Force -Recurse
+    If ($SaveAs -eq $DEST + $($_.BaseName) + ".mp4") {
+        Remove-Item -Path $_.FullName -Force
+        If ($_.Directory.Name -ne "<The Name of Your Input Folder>") {
+            $Count = (Get-ChildItem -Path $_.DirectoryName -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts,*.VOB -Recurse | ?{$_.BaseName -notlike "*sample*"}).Count
+            If ($Count -eq 0) {
+                Remove-Item -Path $_.DirectoryName -Force -Recurse
+            }
         }
+    } Else {
+        Remove-Item -Path $_.DirectoryName -Force -Recurse
     }
 } -End {
     # Write the completion message
-    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-    Write-Host "File(s) $FILE of $TOTAL Completed" -ForegroundColor Cyan
-    "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    Write-Host "`n|$("-" * (9 + $FILE.ToString().Length + 4 + $LIST.Count.ToString().Length + 11))|"
+    Write-Host "|" -ForegroundColor White -NoNewline; Write-Host " File(s) $FILE of $($LIST.Count) Completed " -ForegroundColor Cyan -NoNewline; Write-Host "|" -ForegroundColor White
+    Write-Host "|$("-" * (9 + $FILE.ToString().Length + 4 + $LIST.Count.ToString().Length + 11))|`n"
 }
