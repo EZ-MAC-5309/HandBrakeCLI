@@ -8,10 +8,10 @@ If ($\_.Directory.Name -eq "`<The Name of Your Input Folder>`") {
 If your input file path is:&nbsp;&nbsp; "`C:\Users\Me\Downloads\Completed\`"  
 If ($\_.Directory.Name -eq "`Completed`") {  
 
-`This script will automatically upscale or downscale video to (720 x 540 4:3) or (720 x 406 16:9)`
+`This script will automatically upscale or downscale video to (720 x 540 4:3) or (720 x 406 16:9)`  
+`You can change this to something else in the 720.json file`
 
-You can change this to something else in the 720.json file:  
-For a 1280p resolution for example:  
+Example for 1280 x 720:  
 "PictureWidth": `720`, `set to 1280`  
 "PictureHeight": `576`, `set to 720`  
 "PictureUseMaximumSize": false,  
