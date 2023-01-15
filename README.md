@@ -11,9 +11,9 @@ If ($\_.Directory.Name -eq "`Completed`") {
 `This script will automatically upscale or downscale video to (720 x 540 4:3) or (720 x 406 16:9)`  
 `You can change this to something else in the 720.json file`
 
-Example for 1280 x 720:  
+Example for (1280 x 960 4:3) or (1280 x 720 16:9):  
 "PictureWidth": `720`, `set to 1280`  
-"PictureHeight": `576`, `set to 720`  
+"PictureHeight": `576`, `set to 1152`  
 "PictureUseMaximumSize": false,  
 "PictureAllowUpscaling": true,  
 "PictureForceHeight": 0,  
