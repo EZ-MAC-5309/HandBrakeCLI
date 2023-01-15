@@ -4,7 +4,7 @@ $FILE         =  0
 $HandBrakeCLI =  "C:\<Path>\<To>\HandBrakeCLI.exe"
 $Preset       =  "C:\<Path>\<To>\720.json"
 $DEST         =  "C:\<Path>\<To>\<Output>\<Folder>\"
-$LIST         =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts -Recurse | ?{$_.BaseName -notlike "*sample*" -and $_.Directory.BaseName -notlike "*_UNPACK*"}
+$LIST         =  Get-ChildItem "C:\<Path>\<To>\<Input>\<Folder>\" -Include *.mkv,*.wmv,*.mp4,*.avi,*.ts,*.VOB -Recurse | ?{$_.BaseName -notlike "*sample*" -and $_.Directory.BaseName -notlike "*_UNPACK*"}
 
 # Parse the list
 $LIST | % -Begin {
